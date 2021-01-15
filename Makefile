@@ -1,6 +1,6 @@
-default: image
+default: image-pyhf
 
-image:
+image-pyhf:
 	docker build . \
 		--pull \
 		--file pyhf/Dockerfile \
