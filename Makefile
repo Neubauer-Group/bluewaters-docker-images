@@ -5,4 +5,4 @@ image-pyhf:
 		--pull \
 		--file pyhf/Dockerfile \
 		--build-arg PYHF_RELEASE=0.5.4 \
-		--tag neubauergroup/bluewater-pyhf:debug-local
+		--tag neubauergroup/bluewaters-pyhf:debug-local

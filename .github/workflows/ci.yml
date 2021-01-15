@@ -1,7 +1,9 @@
 name: CI
 
 on:
-  push: [main]
+  push:
+    branches:
+    - main
   pull_request:
   schedule:
   - cron:  '1 0 * * 0'
@@ -12,12 +14,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
     - name: Build Docker image
       if: "!(startsWith(github.ref, 'refs/tags/'))"
       uses: docker/build-push-action@v1
       with:
-        repository: neubauergroup/bluewater-pyhf
+        repository: neubauergroup/bluewaters-pyhf
         dockerfile: pyhf/Dockerfile
         tags: test
         tag_with_sha: true
@@ -28,5 +30,5 @@ jobs:
     - name: Run test program in Python
       run: >-
         docker run --rm
-        neubauergroup/bluewater-pyhf:test
+        neubauergroup/bluewaters-pyhf:test
         /bin/bash -c "python3 -m pip list && echo '' && pyhf --version"
