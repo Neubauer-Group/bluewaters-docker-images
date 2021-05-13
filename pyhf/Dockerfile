@@ -7,7 +7,8 @@ RUN yum update -y && \
         bzip2-devel \
         libffi-devel \
         curl \
-        tar
+        tar \
+        make
 ARG PYTHON_VERSION=3.8.8
 RUN curl -sLO https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
     tar -xzf Python-${PYTHON_VERSION}.tgz && \
