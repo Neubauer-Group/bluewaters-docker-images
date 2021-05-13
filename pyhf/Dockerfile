@@ -6,6 +6,7 @@ RUN yum update -y && \
         openssl-devel \
         bzip2-devel \
         libffi-devel \
+        lzma-devel \
         curl \
         tar \
         make
