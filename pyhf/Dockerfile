@@ -20,7 +20,7 @@ RUN curl -sLO https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHO
         --enable-optimizations \
         --with-lto \
         --enable-ipv6 && \
-    make && \
+    make -j"$(($(nproc) - 1))" && \
     make install
 
 ARG PYHF_RELEASE=0.6.1
