@@ -13,8 +13,15 @@ ARG PYTHON_VERSION=3.8.8
 RUN curl -sLO https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
     tar -xzf Python-${PYTHON_VERSION}.tgz && \
     cd Python-${PYTHON_VERSION} && \
-    ./configure --enable-optimizations && \
-    make altinstall
+    ./configure --help && \
+    ./configure --prefix=/usr \
+        --exec_prefix=/usr \
+        --with-ensurepip \
+        --enable-optimizations \
+        --with-lto \
+        --enable-ipv6 && \
+    make && \
+    make install
 
 ARG PYHF_RELEASE=0.6.1
 RUN python3 -m pip install --upgrade pip setuptools wheel && \
