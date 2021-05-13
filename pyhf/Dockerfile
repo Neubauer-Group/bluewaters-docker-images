@@ -25,6 +25,7 @@ RUN curl -sLO "https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTH
         --enable-ipv6 && \
     make -j"$(($(nproc) - 1))" && \
     make install && \
+    printf "\nalias python='python3'\n" >> ~/.bash_profile && \
     cd / && \
     rm -rf /build
 WORKDIR /
