@@ -22,7 +22,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: neubauergroup/bluewaters-pyhf
         dockerfile: pyhf/Dockerfile
-        tags: latest,0.5.4
+        tags: latest,0.6.1
     - name: Build and Publish to Registry with Release Tag
       if: startsWith(github.ref, 'refs/tags/')
       uses: docker/build-push-action@v1
@@ -31,5 +31,5 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: neubauergroup/bluewaters-pyhf
         dockerfile: pyhf/Dockerfile
-        tags: latest,latest-stable,0.5.4
+        tags: latest,latest-stable,0.6.1
         tag_with_ref: true
