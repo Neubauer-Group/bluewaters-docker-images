@@ -2,7 +2,18 @@ FROM centos:7
 
 RUN yum update -y && \
     yum install -y \
-        python3
+        gcc \
+        openssl-devel \
+        bzip2-devel \
+        libffi-devel \
+        curl \
+        tar
+ARG PYTHON_VERSION=3.8.8
+RUN curl -sLO https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
+    tar -xzf Python-${PYTHON_VERSION}.tgz && \
+    cd Python-${PYTHON_VERSION} && \
+    ./configure --enable-optimizations && \
+    make altinstall
 
 ARG PYHF_RELEASE=0.6.1
 RUN python3 -m pip install --upgrade pip setuptools wheel && \
