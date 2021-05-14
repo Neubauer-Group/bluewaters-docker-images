@@ -31,7 +31,7 @@ RUN curl -sLO "https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTH
 WORKDIR /
 
 ARG PYHF_RELEASE=0.6.1
-RUN python3 -m pip install --upgrade pip setuptools wheel && \
+RUN python3 -m pip --no-cache-dir install --upgrade pip setuptools wheel && \
     python3 -m pip install "pyhf[xmlio,contrib]==${PYHF_RELEASE}" && \
     python3 -m pip install funcx-endpoint && \
     python3 -m pip list
