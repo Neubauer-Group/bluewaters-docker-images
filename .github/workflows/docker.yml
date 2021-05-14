@@ -69,7 +69,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: Dockerfile
+          file: pyhf/Dockerfile
           tags: ${{ steps.prep.outputs.tags }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
@@ -91,7 +91,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: Dockerfile
+          file: pyhf/Dockerfile
           tags: neubauergroup/bluewaters-pyhf:latest,neubauergroup/bluewaters-pyhf:0.6.1,ghcr.io/${{github.repository}}:latest,ghcr.io/${{github.repository}}:0.6.1
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
@@ -105,7 +105,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: Dockerfile
+          file: pyhf/Dockerfile
           tags: ${{ steps.prep.outputs.tags }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
