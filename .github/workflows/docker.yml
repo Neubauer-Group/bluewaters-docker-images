@@ -64,6 +64,9 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: lowercase test
+        run: echo ${{ github.repository,, }}
+
       - name: Test build
         id: docker_build_test
         uses: docker/build-push-action@v2
