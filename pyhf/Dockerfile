@@ -9,7 +9,8 @@ RUN yum update -y && \
         lzma-devel \
         curl \
         tar \
-        make
+        make && \
+    yum clean all
 
 ARG PYTHON_VERSION=3.8.8
 WORKDIR /build
