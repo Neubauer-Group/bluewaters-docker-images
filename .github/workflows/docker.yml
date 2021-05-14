@@ -67,7 +67,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: lowercase test
-        run: echo ${{ github.repository,, }}
+        run: |
+          echo ${{ github.repository,, }}
+          echo ${{ steps.prep.outputs.repo_name_lowercase }}
 
       - name: Test build
         id: docker_build_test
