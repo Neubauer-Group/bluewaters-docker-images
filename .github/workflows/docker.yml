@@ -84,6 +84,12 @@ jobs:
       - name: List built images
         run: docker images
 
+      - name: Test pyhf installed
+        run: >-
+          docker run --rm
+          neubauergroup/bluewaters-pyhf:sha-${GITHUB_SHA::8}
+          /bin/bash -c "python3 -m pip list && echo '' && pyhf --version"
+
       - name: Build and publish to registry
         # every PR will trigger a push event on main, so check the push event is actually coming from main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'Neubauer-Group/bluewaters-docker-images'
