@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=neubauergroup/centos-python3:3.8.8
+ARG BASE_IMAGE=neubauergroup/centos-python3:3.8.10
 FROM ${BASE_IMAGE} as base
 
 ARG PYHF_RELEASE=0.6.1
