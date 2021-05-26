@@ -6,15 +6,9 @@ on:
       - main
     tags:
       - v*
-    paths-ignore:
-      - "mg5_amc/Dockerfile"
-      - ".github/workflows/docker-mg5.yml"
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - "mg5_amc/Dockerfile"
-      - ".github/workflows/docker-mg5.yml"
   schedule:
     - cron:  '1 0 * * 0'
   release:
