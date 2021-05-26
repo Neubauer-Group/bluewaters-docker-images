@@ -3,12 +3,12 @@ name: Docker Images
 on:
   push:
     branches:
-    - main
+      - main
     tags:
-    - v*
+      - v*
   pull_request:
     branches:
-    - main
+      - main
   schedule:
     - cron:  '1 0 * * 0'
   release:
@@ -17,7 +17,7 @@ on:
 
 jobs:
   docker:
-    name: Build and publish Docker images
+    name: Build and publish MadGraph images
     runs-on: ubuntu-latest
 
     steps:
@@ -28,8 +28,9 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=neubauergroup/bluewaters-pyhf
+          DOCKER_IMAGE=neubauergroup/bluewaters-mg5_amc
           VERSION=latest
+          MG5_AMC_VERSION=3.1.0
           REPO_NAME=${{github.repository}}
           REPO_NAME_LOWERCASE="${REPO_NAME,,}"
           if [[ $GITHUB_REF == refs/tags/* ]]; then
@@ -38,15 +39,16 @@ jobs:
             VERSION=pr-${{ github.event.number }}
           fi
           TAGS="${DOCKER_IMAGE}:${VERSION}"
-          TAGS="$TAGS,${DOCKER_IMAGE}:latest,${DOCKER_IMAGE}:0.6.1,${DOCKER_IMAGE}:sha-${GITHUB_SHA::8}"
+          TAGS="$TAGS,${DOCKER_IMAGE}:latest,${DOCKER_IMAGE}:${MG5_AMC_VERSION},${DOCKER_IMAGE}:sha-${GITHUB_SHA::8}"
           # Releases also have GITHUB_REFs that are tags, so reuse VERSION
           if [ "${{ github.event_name }}" = "release" ]; then
-            TAGS="$TAGS,${DOCKER_IMAGE}:latest-stable,ghcr.io/${REPO_NAME_LOWERCASE}:latest-stable,ghcr.io/${REPO_NAME_LOWERCASE}:${VERSION}"
+            TAGS="$TAGS,${DOCKER_IMAGE}:latest-stable,ghcr.io/${REPO_NAME_LOWERCASE}:mg5_amc-latest-stable,ghcr.io/${REPO_NAME_LOWERCASE}:mg5_amc-${VERSION}"
           fi
           echo ::set-output name=version::${VERSION}
           echo ::set-output name=tags::${TAGS}
           echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
           echo ::set-output name=repo_name_lowercase::"${REPO_NAME_LOWERCASE}"
+          echo ::set-output name=mg5_amc_version::"${MG5_AMC_VERSION}"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -55,12 +57,14 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Login to DockerHub
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to GitHub Container Registry
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
@@ -72,7 +76,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: pyhf/Dockerfile
+          file: mg5_amc/Dockerfile
           tags: ${{ steps.prep.outputs.tags }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
@@ -87,11 +91,11 @@ jobs:
       - name: List built images
         run: docker images
 
-      - name: Test pyhf installed
+      - name: Test mg5_amc installed
         run: >-
           docker run --rm
-          neubauergroup/bluewaters-pyhf:sha-${GITHUB_SHA::8}
-          /bin/bash -c "python3 -m pip list && echo '' && pyhf --version"
+          neubauergroup/bluewaters-mg5_amc:sha-${GITHUB_SHA::8}
+          'python -m pip list && echo "" && mg5_aMC --help && head -n 2 /usr/local/MG5_aMC/VERSION'
 
       - name: Build and publish to registry
         # every PR will trigger a push event on main, so check the push event is actually coming from main
@@ -100,8 +104,12 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: pyhf/Dockerfile
-          tags: neubauergroup/bluewaters-pyhf:latest,neubauergroup/bluewaters-pyhf:0.6.1,ghcr.io/${{steps.prep.outputs.repo_name_lowercase}}:latest,ghcr.io/${{steps.prep.outputs.repo_name_lowercase}}:0.6.1
+          file: mg5_amc/Dockerfile
+          tags: |
+            neubauergroup/bluewaters-mg5_amc:latest
+            neubauergroup/bluewaters-mg5_amc:${{ steps.prep.outputs.mg5_amc_version }}
+            ghcr.io/${{ steps.prep.outputs.repo_name_lowercase }}:mg5_amc-latest
+            ghcr.io/${{ steps.prep.outputs.repo_name_lowercase }}:mg5_amc-${{ steps.prep.outputs.mg5_amc_version }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
@@ -114,7 +122,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: pyhf/Dockerfile
+          file: mg5_amc/Dockerfile
           tags: ${{ steps.prep.outputs.tags }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
