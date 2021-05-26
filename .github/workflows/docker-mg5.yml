@@ -93,7 +93,7 @@ jobs:
         run: >-
           docker run --rm
           neubauergroup/bluewaters-mg5_amc:sha-${GITHUB_SHA::8}
-          /bin/bash -c 'python -m pip list && echo "" && mg5_amc --version'
+          'python -m pip list && echo "" && mg5_aMC --help && head -n 2 /usr/local/MG5_aMC/VERSION'
 
       - name: Build and publish to registry
         # every PR will trigger a push event on main, so check the push event is actually coming from main

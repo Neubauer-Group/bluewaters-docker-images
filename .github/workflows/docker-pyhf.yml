@@ -93,7 +93,7 @@ jobs:
         run: >-
           docker run --rm
           neubauergroup/bluewaters-pyhf:sha-${GITHUB_SHA::8}
-          /bin/bash -c 'python -m pip list && echo "" && pyhf --version'
+          'python -m pip list && echo "" && pyhf --version'
 
       - name: Build and publish to registry
         # every PR will trigger a push event on main, so check the push event is actually coming from main
