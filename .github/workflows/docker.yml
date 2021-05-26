@@ -17,7 +17,7 @@ on:
 
 jobs:
   docker:
-    name: Build and publish Docker images
+    name: Build and publish pyhf images
     runs-on: ubuntu-latest
 
     steps:
@@ -30,6 +30,7 @@ jobs:
         run: |
           DOCKER_IMAGE=neubauergroup/bluewaters-pyhf
           VERSION=latest
+          PYHF_VERSION=0.6.1
           REPO_NAME=${{github.repository}}
           REPO_NAME_LOWERCASE="${REPO_NAME,,}"
           if [[ $GITHUB_REF == refs/tags/* ]]; then
@@ -38,7 +39,7 @@ jobs:
             VERSION=pr-${{ github.event.number }}
           fi
           TAGS="${DOCKER_IMAGE}:${VERSION}"
-          TAGS="$TAGS,${DOCKER_IMAGE}:latest,${DOCKER_IMAGE}:0.6.1,${DOCKER_IMAGE}:sha-${GITHUB_SHA::8}"
+          TAGS="$TAGS,${DOCKER_IMAGE}:latest,${DOCKER_IMAGE}:${PYHF_VERSION},${DOCKER_IMAGE}:sha-${GITHUB_SHA::8}"
           # Releases also have GITHUB_REFs that are tags, so reuse VERSION
           if [ "${{ github.event_name }}" = "release" ]; then
             TAGS="$TAGS,${DOCKER_IMAGE}:latest-stable,ghcr.io/${REPO_NAME_LOWERCASE}:latest-stable,ghcr.io/${REPO_NAME_LOWERCASE}:${VERSION}"
@@ -47,6 +48,7 @@ jobs:
           echo ::set-output name=tags::${TAGS}
           echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
           echo ::set-output name=repo_name_lowercase::"${REPO_NAME_LOWERCASE}"
+          echo ::set-output name=pyhf_version::"${PYHF_VERSION}"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -91,7 +93,7 @@ jobs:
         run: >-
           docker run --rm
           neubauergroup/bluewaters-pyhf:sha-${GITHUB_SHA::8}
-          /bin/bash -c "python3 -m pip list && echo '' && pyhf --version"
+          /bin/bash -c 'python -m pip list && echo "" && pyhf --version'
 
       - name: Build and publish to registry
         # every PR will trigger a push event on main, so check the push event is actually coming from main
@@ -101,7 +103,11 @@ jobs:
         with:
           context: .
           file: pyhf/Dockerfile
-          tags: neubauergroup/bluewaters-pyhf:latest,neubauergroup/bluewaters-pyhf:0.6.1,ghcr.io/${{steps.prep.outputs.repo_name_lowercase}}:latest,ghcr.io/${{steps.prep.outputs.repo_name_lowercase}}:0.6.1
+          tags: |
+            neubauergroup/bluewaters-pyhf:latest
+            neubauergroup/bluewaters-pyhf:${{ steps.prep.outputs.pyhf_version }}
+            ghcr.io/${{ steps.prep.outputs.repo_name_lowercase }}:latest
+            ghcr.io/${{ steps.prep.outputs.repo_name_lowercase }}:${{ steps.prep.outputs.pyhf_version }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
