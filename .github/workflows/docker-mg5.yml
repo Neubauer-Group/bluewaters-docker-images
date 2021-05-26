@@ -3,12 +3,18 @@ name: Docker Images
 on:
   push:
     branches:
-    - main
+      - main
     tags:
-    - v*
+      - v*
+    paths:
+      - "mg5_amc/Dockerfile"
+      - ".github/workflows/docker-mg5.yml"
   pull_request:
     branches:
-    - main
+      - main
+    paths:
+      - "mg5_amc/Dockerfile"
+      - ".github/workflows/docker-mg5.yml"
   schedule:
     - cron:  '1 0 * * 0'
   release:
