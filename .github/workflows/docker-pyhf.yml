@@ -6,15 +6,15 @@ on:
       - main
     tags:
       - v*
-    paths:
-      - "pyhf/Dockerfile"
-      - ".github/workflows/docker-pyhf.yml"
+    paths-ignore:
+      - "mg5_amc/Dockerfile"
+      - ".github/workflows/docker-mg5.yml"
   pull_request:
     branches:
       - main
-    paths:
-      - "pyhf/Dockerfile"
-      - ".github/workflows/docker-pyhf.yml"
+    paths-ignore:
+      - "mg5_amc/Dockerfile"
+      - ".github/workflows/docker-mg5.yml"
   schedule:
     - cron:  '1 0 * * 0'
   release:
