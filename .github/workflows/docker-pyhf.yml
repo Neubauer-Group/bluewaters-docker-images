@@ -3,12 +3,18 @@ name: Docker Images
 on:
   push:
     branches:
-    - main
+      - main
     tags:
-    - v*
+      - v*
+    paths:
+      - "pyhf/Dockerfile"
+      - ".github/workflows/docker-pyhf.yml"
   pull_request:
     branches:
-    - main
+      - main
+    paths:
+      - "pyhf/Dockerfile"
+      - ".github/workflows/docker-pyhf.yml"
   schedule:
     - cron:  '1 0 * * 0'
   release:
