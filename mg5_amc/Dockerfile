@@ -3,7 +3,5 @@ FROM ${BASE_IMAGE} as base
 
 WORKDIR /home/docker/data
 
-RUN echo 'exit' > exit && \
-    mg5_aMC exit && \
-    rm exit && \
+RUN echo "exit" | mg5_aMC && \
     lhapdf get NNPDF23_lo_as_0130_qed
