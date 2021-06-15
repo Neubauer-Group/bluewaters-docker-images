@@ -91,12 +91,6 @@ jobs:
       - name: List built images
         run: docker images
 
-      - name: Test momemta installed
-        run: >-
-          docker run --rm
-          neubauergroup/bluewaters-momemta:sha-${GITHUB_SHA::8}
-          'python -m pip list && echo "" && mg5_aMC --help && head -n 2 /usr/local/MG5_aMC/VERSION'
-
       - name: Build and publish to registry
         # every PR will trigger a push event on main, so check the push event is actually coming from main
         # if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'Neubauer-Group/bluewaters-docker-images'
