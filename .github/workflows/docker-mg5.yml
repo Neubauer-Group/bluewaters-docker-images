@@ -30,7 +30,7 @@ jobs:
         run: |
           DOCKER_IMAGE=neubauergroup/bluewaters-mg5_amc
           VERSION=latest
-          MG5_AMC_VERSION=3.1.0
+          MG5_AMC_VERSION=3.1.1
           REPO_NAME=${{github.repository}}
           REPO_NAME_LOWERCASE="${REPO_NAME,,}"
           if [[ $GITHUB_REF == refs/tags/* ]]; then
@@ -95,7 +95,10 @@ jobs:
         run: >-
           docker run --rm
           neubauergroup/bluewaters-mg5_amc:sha-${GITHUB_SHA::8}
-          'python -m pip list && echo "" && mg5_aMC --help && head -n 2 /usr/local/MG5_aMC/VERSION'
+          'python -m pip list && \
+           echo "" && \
+           mg5_aMC --help && \
+           head -n 2 /usr/local/venv/MG5_aMC/VERSION'
 
       - name: Build and publish to registry
         # every PR will trigger a push event on main, so check the push event is actually coming from main
