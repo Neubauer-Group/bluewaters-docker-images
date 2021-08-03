@@ -1,6 +1,7 @@
 #!/bin/bash
 
 module load shifter
+
 # pyhf
 shifterimg pull neubauergroup/bluewaters-pyhf:0.6.2
 # MadGraph5
