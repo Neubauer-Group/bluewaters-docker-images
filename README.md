@@ -8,3 +8,5 @@ All Docker images are publicly available on the [Neubauer Group Docker Hub org](
 
 - [`neubauergroup/bluewaters-pyhf`](https://hub.docker.com/r/neubauergroup/bluewaters-pyhf)
 - [`neubauergroup/bluewaters-mg5_amc`](https://hub.docker.com/r/neubauergroup/bluewaters-mg5_amc)
+- [`neubauergroup/bluewaters-momemta`](https://hub.docker.com/r/neubauergroup/bluewaters-momemta)
+- [`scailfin/delphes-python-centos`](https://hub.docker.com/r/scailfin/delphes-python-centos)
