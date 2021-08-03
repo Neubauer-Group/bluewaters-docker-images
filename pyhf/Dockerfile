@@ -1,8 +1,9 @@
-ARG BASE_IMAGE=neubauergroup/centos-python3:3.8.10
+ARG BASE_IMAGE=neubauergroup/centos-python3:3.8.11
 FROM ${BASE_IMAGE} as base
 
-ARG PYHF_RELEASE=0.6.1
+ARG PYHF_RELEASE=0.6.2
 RUN python3 -m pip --no-cache-dir install --upgrade pip setuptools wheel && \
+    python3 -m pip --no-cache-dir install "click<8.0" && \
     python3 -m pip --no-cache-dir install "pyhf[xmlio,contrib]==${PYHF_RELEASE}" && \
     python3 -m pip --no-cache-dir install "funcx-endpoint>=0.2.3" && \
     python3 -m pip list
