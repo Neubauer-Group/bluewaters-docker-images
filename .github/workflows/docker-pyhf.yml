@@ -30,7 +30,7 @@ jobs:
         run: |
           DOCKER_IMAGE=neubauergroup/bluewaters-pyhf
           VERSION=latest
-          PYHF_VERSION=0.6.1
+          PYHF_VERSION=0.6.2
           REPO_NAME=${{github.repository}}
           REPO_NAME_LOWERCASE="${REPO_NAME,,}"
           if [[ $GITHUB_REF == refs/tags/* ]]; then
