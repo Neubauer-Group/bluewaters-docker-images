@@ -12,5 +12,5 @@ image-momemta:
 	docker build . \
 		--pull \
 		--file momemta/Dockerfile \
-		--build-arg BASE_IMAGE=neubauergroup/momemta-python:1.0.1 \
+		--build-arg BASE_IMAGE=neubauergroup/momemta-python-centos:1.0.1 \
 		--tag neubauergroup/bluewaters-momemta:debug-local
